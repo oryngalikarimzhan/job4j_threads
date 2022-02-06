@@ -20,13 +20,13 @@ public class Wget implements Runnable {
              FileOutputStream fileOutputStream = new FileOutputStream("1.jpg")) {
             long fileSize = new URL(url).openConnection().getContentLength();
             System.out.println(fileSize);
-            byte[] dataBuffer = new byte[16384];
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
-            long sec = 16384 / speed;
+            long sec = 1024 / speed;
             int currentSize = 0;
             long startTime = System.currentTimeMillis();
             System.out.print("\rDownloaded " + currentSize + "from " + fileSize);
-            while ((bytesRead = in.read(dataBuffer, 0, 16384)) != -1) {
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 long endTime = System.currentTimeMillis();
                 if ((endTime - startTime) * 1000 < sec) {
