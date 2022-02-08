@@ -12,23 +12,19 @@ public class UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
 
     public synchronized boolean add(User user) {
-        boolean rsl = false;
-        if (!users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
-            rsl = true;
-        }
-        return rsl;
+        return users.putIfAbsent(user.getId(), user) != null;
     }
 
     public synchronized boolean update(User user) {
-        return true;
+        return users.replace(user.getId(), user) != null;
     }
 
     public synchronized boolean delete(User user) {
         return users.remove(user.getId(), user);
     }
 
-    public synchronized void transfer(int fromId, int toId, int amount) {
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
+        boolean rsl = false;
         User sender = users.get(fromId);
         User receiver = users.get(toId);
         if (sender != null && receiver != null && users.get(fromId).getAmount() >= amount) {
@@ -36,21 +32,12 @@ public class UserStorage {
             delete(receiver);
             add(new User(fromId, sender.getAmount() - amount));
             add(new User(toId, receiver.getAmount() + amount));
-
+            rsl = true;
         }
+        return rsl;
     }
 
     public synchronized Map<Integer, User> getUsers() {
         return new HashMap<>(users);
-    }
-
-    public static void main(String[] args) {
-        UserStorage stoge = new UserStorage();
-
-        stoge.add(new User(1, 100));
-        stoge.add(new User(2, 200));
-
-        stoge.transfer(1, 2, 50);
-        System.out.println(stoge.getUsers().values());
     }
 }
