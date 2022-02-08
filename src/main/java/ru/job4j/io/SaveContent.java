@@ -12,8 +12,9 @@ public class SaveContent {
 
     public synchronized void save(String content) {
         try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-            byte[] buffer = content.getBytes();
-            bos.write(buffer, 0, buffer.length);
+            for (int i = 0; i < content.length(); i += 1) {
+                bos.write(content.charAt(i));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

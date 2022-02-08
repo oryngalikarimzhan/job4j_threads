@@ -7,13 +7,13 @@ import java.io.File;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
-public class ParseFileTest {
+public class GetContentTest {
 
     @Test
     public void test() throws InterruptedException {
-        ParseFile parseFile = new ParseFile(new File("./README.md"));
-        GetContent getContent = new GetContent(parseFile.getFile());
-        SaveContent saveContent = new SaveContent(parseFile.getFile());
+        File parseFile = new File("./README.md");
+        GetContent getContent = new GetContent(parseFile);
+        SaveContent saveContent = new SaveContent(parseFile);
         Thread thread1 = new Thread(
                 () -> getContent.getStandardContent()
         );
