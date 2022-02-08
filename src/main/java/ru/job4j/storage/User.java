@@ -1,8 +1,9 @@
 package ru.job4j.storage;
 
+import java.util.Iterator;
 import java.util.Objects;
 
-public class User {
+public class User implements Iterable {
 
     private final int id;
     private int amount;
@@ -21,6 +22,8 @@ public class User {
         int amountCopy = amount;
         return amountCopy;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -45,5 +48,10 @@ public class User {
                 + "id=" + id
                 + ", amount=" + amount
                 + '}';
+    }
+
+    @Override
+    public Iterator iterator() {
+        return null;
     }
 }
