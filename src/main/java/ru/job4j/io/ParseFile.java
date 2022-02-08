@@ -15,16 +15,16 @@ public final class ParseFile {
 
     public static void main(String[] args) throws InterruptedException {
         ParseFile parseFile = new ParseFile(new File("./README.md"));
-        GetContent getContent = new GetContent();
-        SaveContent saveContent = new SaveContent();
+        GetContent getContent = new GetContent(parseFile.getFile());
+        SaveContent saveContent = new SaveContent(parseFile.getFile());
         Thread thread1 = new Thread(
-                () -> System.out.println(getContent.get(parseFile, i -> true))
+                () -> System.out.println(getContent.getStandardContent())
         );
         thread1.start();
         Thread.sleep(1000);
-        saveContent.save("bla", parseFile);
+        saveContent.save("bla");
         Thread thread2 = new Thread(
-                () -> System.out.println(getContent.get(parseFile, i -> i != 74))
+                () -> System.out.println(getContent.getContentWithoutUnicode())
         );
         thread2.start();
         thread1.join();

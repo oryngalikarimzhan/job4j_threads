@@ -1,16 +1,19 @@
 package ru.job4j.io;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 public class SaveContent {
 
-    public synchronized void save(String content, ParseFile parseFile) {
-        try (OutputStream o = new FileOutputStream(parseFile.getFile())) {
-            for (int i = 0; i < content.length(); i += 1) {
-                o.write(content.charAt(i));
-            }
+    private File file;
+
+    public SaveContent(File file) {
+        this.file = file;
+    }
+
+    public synchronized void save(String content) {
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+            byte[] buffer = content.getBytes();
+            bos.write(buffer, 0, buffer.length);
         } catch (IOException e) {
             e.printStackTrace();
         }
