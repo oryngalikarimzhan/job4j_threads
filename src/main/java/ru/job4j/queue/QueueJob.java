@@ -9,13 +9,12 @@ public class QueueJob {
         Thread producer = new Thread(
                 () -> {
                     while (true) {
-                        System.out.println(Thread.currentThread().getName() + " working");
                         try {
                             Thread.sleep(1500);
+                            queue.offer(new Random().nextInt(100));
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            Thread.currentThread().interrupt();
                         }
-                        queue.offer(new Random().nextInt(100));
                     }
                 }, "Producer");
         producer.start();
@@ -23,13 +22,12 @@ public class QueueJob {
         Thread consumer = new Thread(
                 () -> {
                     while (true) {
-                        System.out.println(Thread.currentThread().getName() + " working");
                         try {
                             Thread.sleep(1000);
+                            queue.poll();
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            Thread.currentThread().interrupt();
                         }
-                        queue.poll();
                     }
                 }, "Consumer");
         consumer.start();

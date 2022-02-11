@@ -14,37 +14,26 @@ public class SimpleBlockingQueue<T> {
         this.limit = limit;
     }
 
-    public void offer(T value) {
+    public void offer(T value) throws InterruptedException {
         synchronized (this) {
             while (this.queue.size() == this.limit) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                this.wait();
             }
-            if (queue.isEmpty()) {
-                this.notify();
-            }
-            queue.add(value);
-            System.out.print("Size " + queue.size() + " ");
+            queue.offer(value);
+            this.notify();
+            System.out.println("New size " + queue.size() + " produced " + value + ". ");
         }
     }
 
-    public T poll() {
+    public T poll() throws InterruptedException {
         synchronized (this) {
-            while (queue.isEmpty()) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+            while (queue.size() == 0) {
+                this.wait();
             }
-            if (this.queue.size() == this.limit) {
-                this.notify();
-            }
-            System.out.print("Size " + queue.size() + " ");
-            return queue.poll();
+            T taken = queue.poll();
+            notify();
+            System.out.println("Size after " + queue.size() + " consumed " + taken + ". ");
+            return taken;
         }
     }
 }
