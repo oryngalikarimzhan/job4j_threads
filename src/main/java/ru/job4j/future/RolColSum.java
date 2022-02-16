@@ -3,6 +3,7 @@ package ru.job4j.future;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -22,6 +23,23 @@ public class RolColSum {
                     + "rowSum=" + rowSum
                     + ", colSum=" + colSum
                     + '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Sums sums = (Sums) o;
+            return rowSum == sums.rowSum && colSum == sums.colSum;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(rowSum, colSum);
         }
     }
 
