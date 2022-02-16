@@ -36,9 +36,15 @@ public class ParallelSearch<T> extends RecursiveTask<Integer> {
         for (int i = from; i <= to; i++) {
             if (array[i].equals(object)) {
                 rsl = i;
+                break;
             }
         }
         return rsl;
+    }
+
+    public static <T> int search(T[] array, T object) {
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        return forkJoinPool.invoke(new ParallelSearch<>(array, object, 0, array.length - 1));
     }
 
     public static void main(String[] args) {
@@ -47,8 +53,7 @@ public class ParallelSearch<T> extends RecursiveTask<Integer> {
             array[i] = (char) i;
         }
         char object = '!';
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = forkJoinPool.invoke(new ParallelSearch<>(array, object, 0, array.length - 1));
+        int result = search(array, object);
         System.out.println(result);
     }
 }
