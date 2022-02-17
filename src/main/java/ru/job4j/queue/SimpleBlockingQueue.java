@@ -34,7 +34,8 @@ public class SimpleBlockingQueue<T> {
             }
             T taken = queue.poll();
             notify();
-            System.out.println("It is time to run " + taken + ". Removing it from queue. Now queue size is " + queue.size());
+            System.out.println("It is time to run " + taken + ". "
+                    + "Removing it from queue. Now queue size is " + queue.size());
             return taken;
         }
     }
